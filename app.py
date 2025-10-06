@@ -211,6 +211,12 @@ RESULTS_TEMPLATE = '''
             border-radius: 8px;
             border-left: 4px solid;
             background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .song-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .song-sad { border-left-color: #6c757d; }
