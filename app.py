@@ -75,8 +75,6 @@ button {
     background: #667eea;
     color: white;
     padding: 12px 30px;
-    top: -15px;
-    position: relative;
     border: none;
     border-radius: 8px;
     font-size: 16px;
@@ -189,7 +187,6 @@ RESULTS_TEMPLATE = '''
             padding: 28px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
             border-radius: 10px;
-
         }
 
         /* Different border colors for each mood */
@@ -209,13 +206,17 @@ RESULTS_TEMPLATE = '''
         }
 
         .song-item {
-            background: #;
             padding: 15px;
             margin: 10px 0;
             border-radius: 8px;
-            border-left: 4px solid #1DB954;
+            border-left: 4px solid;
             background-color: #fff;
         }
+
+        .song-sad { border-left-color: #6c757d; }
+        .song-neutral { border-left-color: #17a2b8; }
+        .song-happy { border-left-color: #28a745; }
+        .song-excited { border-left-color: #ff6b6b; }
 
         .song-item a {
             color: black;
@@ -264,7 +265,7 @@ RESULTS_TEMPLATE = '''
 <div class="song-list">
     <h3>🎵 Recommended Songs:</h3>
     {% for song in songs %}
-    <div class="song-item" style="display: flex; align-items: center; margin-bottom: 20px; padding: 15px; background: white; border-radius: 8px;">
+    <div class="song-item song-{{ result.mood.lower() }}" style="display: flex; align-items: center; margin-bottom: 20px;" >
         <img src="{{ song.image }}" alt="Album cover" width="60" style="margin-right: 20px; border-radius: 4px;">
         
         <div style="flex-grow: 1;">
