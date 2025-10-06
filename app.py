@@ -124,6 +124,11 @@ RESULTS_TEMPLATE = '''
             min-height: 100vh;
         }
 
+        .body-happy { background: linear-gradient(135deg, #28a745, #43c67a, #a8eb12); } 
+        .body-sad { background: linear-gradient(135deg, #6c757d, #868e96, #adb5bd); }
+        .body-neutral { background: linear-gradient(135deg, #138496, #17a2b8, #5ee7df); }
+        .body-excited { background: linear-gradient(135deg, #ff6b6b, #f8a5c2, #feca57); }
+
         .container {
             max-width: 600px;
             margin: 20px auto;
@@ -181,10 +186,10 @@ RESULTS_TEMPLATE = '''
         .results-container {
             animation: fadeIn 0.6s ease;
             margin-top: 30px;
-            padding: 25px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 28px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
             border-radius: 10px;
-            border-left: 5px solid;
+
         }
 
         /* Different border colors for each mood */
@@ -204,11 +209,16 @@ RESULTS_TEMPLATE = '''
         }
 
         .song-item {
-            background: white;
+            background: #;
             padding: 15px;
             margin: 10px 0;
             border-radius: 8px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #1DB954;
+            background-color: #fff;
+        }
+
+        .song-item a {
+            color: black;
         }
 
         @keyframes fadeIn {
@@ -223,15 +233,17 @@ RESULTS_TEMPLATE = '''
         }
     </style>
 </head>
-<body>
+<body class="body-{{ result.mood.lower() }}">
     <div class="container">
-        <h1>🎵 Moodify - Music for Your Mood</h1>
+        <h1 style="margin-top: 60px;">🎵 Moodify - Music for Your Mood</h1>
         
         <div class="mood-form">
             <form method="POST">
                 <textarea name="user_text" rows="2" cols="10" placeholder="How are you feeling today?" class="area">{{ user_text }}</textarea>
                 <br><br>
-                <button type="submit">Analyze My Mood 🎶</button>
+                <div style="text-align: center">
+                    <button type="submit" class="body-{{ result.mood.lower() }}">Analyze My Mood 🎶</button>
+                </div>
             </form>
         </div>
 
@@ -248,18 +260,43 @@ RESULTS_TEMPLATE = '''
             
             <p><strong>Music Recommendation:</strong> "{{ result.spotify_query }}"</p>
             
-            {% if songs %}
-            <div class="song-list">
-                <h3>🎵 Recommended Songs:</h3>
-                {% for song in songs %}
-                <div class="song-item">
+{% if songs %}
+<div class="song-list">
+    <h3>🎵 Recommended Songs:</h3>
+    {% for song in songs %}
+    <div class="song-item" style="display: flex; align-items: center; margin-bottom: 20px; padding: 15px; background: white; border-radius: 8px;">
+        <img src="{{ song.image }}" alt="Album cover" width="60" style="margin-right: 20px; border-radius: 4px;">
+        
+        <div style="flex-grow: 1;">
+            <div style="margin-bottom: 10px;">
+                <a href="{{ song.link }}" target="_blank" style="text-decoration: none; color: #333;">
                     <strong>{{ song.name }}</strong> by {{ song.artist }}
-                </div>
-                {% endfor %}
+                </a>
+            </div>
+            
+            {% if song.preview_url %}
+            <div class="audio-player">
+                <audio controls style="width: 100%; height: 40px;">
+                    <source src="{{ song.preview_url }}" type="audio/mpeg">
+                    Your browser does not support audio previews.
+                </audio>
+                <small style="color: #666; display: block; margin-top: 5px;">
+                    <a href="{{ song.link }}" target="_blank" style="color: #1DB954;">Open in Spotify</a>
+                </small>
             </div>
             {% else %}
-            <p>No songs found or Spotify connection failed.</p>
+            <div style="color: #999; font-style: italic;">
+
+                <a href="{{ song.link }}" target="_blank" style="color: #1DB954;">Open in Spotify</a>
+            </div>
             {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No songs found or Spotify connection failed.</p>
+{% endif %}
             
             <br>
             <p><small>Want to try another mood? Just type above and click Analyze! 🔄</small></p>

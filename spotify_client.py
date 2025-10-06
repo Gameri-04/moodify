@@ -55,7 +55,10 @@ def search_spotify_tracks(query, access_token):
                 for track in tracks:
                         song_info = {
                         "name" : track['name'],
-                        "artist": track['artists'][0]['name'] 
+                        "artist": track['artists'][0]['name'],
+                        "link" : track['external_urls']['spotify'],
+                        "preview_url": track['preview_url'],
+                        "image" : track['album']['images'][0]['url'] if track['album']['images'] else None
                         }
                         songs.append(song_info)
 
